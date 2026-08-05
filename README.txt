@@ -1,17 +1,25 @@
-VERSION 2.2 RELIABILITY FIX
+VERSION 2.3 – GUIDED LISTENING
 
-Replace these two files in the repository root:
+Upload and replace:
 - index.html
 - service-worker.js
+- manifest.webmanifest (recommended, but optional)
 
-This version displays 'Version 2.2' in the header so you can confirm the update loaded.
+After committing:
+1. Wait for GitHub Pages deployment to finish.
+2. Open the website in Chrome while online.
+3. Refresh twice.
+4. Close and reopen the installed app.
 
-After GitHub Pages deployment completes:
-1. Open the website URL in Chrome, not the GitHub repository page.
-2. Chrome menu > Settings > Site settings > All sites.
-3. Open stvsyd.github.io and tap Clear & reset.
-4. Reopen the website URL.
-5. Confirm 'Version 2.2' appears in the header.
-6. Reinstall the app if Android removed the old installation.
+You should see:
+Version 2.3 – guided listening
 
-Clearing the site data will remove locally saved progress and vocabulary. If those are valuable and the old app still opens, export them first.
+New features:
+- Pre-listening introduction in simple Bulgarian
+- Five key words before each news item
+- Slow, normal and challenge playback
+- Bulgarian comprehension questions with revealable answers
+- Easier Bulgarian summary
+- Revealable harder words
+- Green, amber and red vocabulary tracking
+- Automatic saving into the personal vocabulary notebook
