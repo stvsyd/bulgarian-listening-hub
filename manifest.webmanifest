@@ -1,7 +1,7 @@
 {
   "name": "Bulgarian Learning Hub",
   "short_name": "BG Learning",
-  "description": "Guided Bulgarian listening, news, Arsenal reporting and vocabulary.",
+  "description": "A1 Bulgarian listening, speaking, news, Arsenal and vocabulary practice.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -4,217 +4,321 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#172033">
-<meta name="description" content="A personal Bulgarian listening, news and vocabulary companion.">
+<meta name="description" content="A1 Bulgarian listening, speaking, news, Arsenal and vocabulary practice.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <title>Bulgarian Learning Hub</title>
 <style>
 :root{--bg:#f4f6f9;--p:#fff;--t:#172033;--m:#667085;--b:#dfe4ea;--a:#2563eb;--g:#15803d;--am:#b45309;--r:#b91c1c;--s:0 8px 24px rgba(23,32,51,.08)}
 *{box-sizing:border-box}body{margin:0;font:16px "Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--t)}
-header{background:linear-gradient(135deg,#111827,#263244);color:#fff;padding:22px 16px;position:sticky;top:0;z-index:10}
-.wrap,main{max-width:1100px;margin:auto}.head{display:flex;justify-content:space-between;gap:12px}.head h1{margin:0;font-size:clamp(24px,5vw,34px)}.head p{margin:6px 0 0;color:#d1d5db}.version{font-size:12px;color:#bfdbfe;margin-top:5px}
-main{padding:14px 14px 80px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;position:sticky;top:112px;z-index:8;background:var(--bg);padding:5px 0}
+header{background:linear-gradient(135deg,#111827,#263244);color:#fff;padding:20px 16px;position:sticky;top:0;z-index:20}
+.wrap,main{max-width:1120px;margin:auto}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.head h1{margin:0;font-size:clamp(24px,5vw,34px)}.head p{margin:6px 0 0;color:#d1d5db}.version{font-size:12px;color:#bfdbfe;margin-top:5px}
+main{padding:14px 14px 100px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;position:sticky;top:108px;z-index:15;background:var(--bg);padding:5px 0}
 button,.btn{font:inherit;border:0;border-radius:10px;padding:11px 13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
 button{background:var(--a);color:#fff}.tabs button{background:#fff;color:var(--t);border:1px solid var(--b)}.tabs .active{background:var(--a);color:#fff}
-.panel,.card,.toolbar,details{background:var(--p);border:1px solid var(--b);border-radius:16px;box-shadow:var(--s)}
+.panel,.card,.toolbar,details,.modalbox{background:var(--p);border:1px solid var(--b);border-radius:16px;box-shadow:var(--s)}
 .panel{padding:15px;margin-bottom:14px}.panel h2{margin:0 0 5px}.muted,.meta{color:var(--m)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{padding:15px}.card h3{margin:8px 0 5px;line-height:1.25}
-.tags,.actions,.word-row,.traffic{display:flex;gap:7px;flex-wrap:wrap}.tag{font-size:12px;padding:5px 8px;border-radius:999px;background:#e8f0ff;color:#1d4ed8}.a0{background:#dcfce7;color:var(--g)}.a1{background:#fef3c7;color:var(--am)}.a2{background:#fee2e2;color:var(--r)}
+.tags,.actions,.traffic{display:flex;gap:7px;flex-wrap:wrap}.tag{font-size:12px;padding:5px 8px;border-radius:999px;background:#e8f0ff;color:#1d4ed8}.a1{background:#fef3c7;color:var(--am)}
 .secondary{background:#eef2ff;color:#3730a3}.ghost{background:#f3f4f6;color:#374151}.success{background:#dcfce7;color:var(--g)}.danger{background:#fee2e2;color:var(--r)}.amber{background:#fef3c7;color:var(--am)}.spotify{background:#1db954;color:#fff}.actions{margin-top:12px}
-.toolbar{display:grid;grid-template-columns:1fr 170px 150px;gap:9px;padding:12px;margin-bottom:14px}input,select,textarea{font:inherit;width:100%;border:1px solid var(--b);border-radius:10px;padding:11px}textarea{min-height:90px}
+.toolbar{display:grid;grid-template-columns:1fr 180px;gap:9px;padding:12px;margin-bottom:14px}input,select,textarea{font:inherit;width:100%;border:1px solid var(--b);border-radius:10px;padding:11px}textarea{min-height:90px}
 summary{padding:15px;font-weight:700;cursor:pointer}.form{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 15px 15px}.full{grid-column:1/-1}.hidden{display:none!important}.word{font-size:25px;font-weight:700}.roman{color:var(--m);font-size:14px}.example{background:#f8fafc;border-left:4px solid var(--a);padding:10px;border-radius:8px;margin-top:9px}
-.exercise{margin-top:14px;border-top:1px solid var(--b);padding-top:14px}.exercise h4{margin:0 0 8px}.intro{background:#eff6ff;padding:11px;border-radius:10px;margin:10px 0}.easy-summary{background:#ecfdf3;border-left:4px solid var(--g);padding:10px;border-radius:8px}
-.key-word{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;border:1px solid var(--b);border-radius:10px;padding:9px;margin:7px 0}.key-word strong{font-size:18px}
-.question{border:1px solid var(--b);border-radius:10px;padding:10px;margin:8px 0}.answer{margin-top:8px;padding:8px;background:#f8fafc;border-radius:8px}
-.status-green{border-color:#86efac;background:#f0fdf4}.status-amber{border-color:#fde68a;background:#fffbeb}.status-red{border-color:#fca5a5;background:#fef2f2}
-#installBtn{display:none;background:#fff;color:#111827}
-@media(max-width:720px){.grid,.toolbar,.form{grid-template-columns:1fr}.full{grid-column:auto}.tabs{top:106px}.tabs button{font-size:13px;padding:11px 4px}.key-word{grid-template-columns:1fr auto}.key-word span:nth-child(2){grid-column:1/-1}}
+.exercise{margin-top:14px;border-top:1px solid var(--b);padding-top:14px}.exercise h4{margin:0 0 8px}.intro{background:#eff6ff;padding:11px;border-radius:10px;margin:10px 0}.easy{background:#ecfdf3;border-left:4px solid var(--g);padding:10px;border-radius:8px}
+.key{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;border:1px solid var(--b);border-radius:10px;padding:9px;margin:7px 0}.key strong{font-size:18px}
+.question{border:1px solid var(--b);border-radius:10px;padding:10px;margin:8px 0}.answer{margin-top:8px;padding:9px;background:#f8fafc;border-radius:8px}.translation{margin-top:7px;padding:9px;background:#fff7ed;border-radius:8px}
+.transcript{margin-top:8px;padding:9px;border:1px dashed var(--b);border-radius:8px;color:#344054;min-height:40px}
+.fulltext{white-space:pre-wrap;line-height:1.55;background:#f8fafc;padding:12px;border-radius:10px}.status-green{border-color:#86efac;background:#f0fdf4}.status-amber{border-color:#fde68a;background:#fffbeb}.status-red{border-color:#fca5a5;background:#fef2f2}
+#installBtn{display:none;background:#fff;color:#111827}.ask-fab{position:fixed;right:18px;bottom:20px;z-index:30;border-radius:999px;padding:15px 18px;background:#7c3aed;box-shadow:0 10px 28px rgba(124,58,237,.35)}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.65);display:flex;align-items:center;justify-content:center;padding:16px;z-index:40}.modalbox{width:min(620px,100%);padding:16px}.modalbox h3{margin-top:0}.modal-actions{display:flex;gap:8px;flex-wrap:wrap}.context{font-size:13px;color:var(--m);background:#f8fafc;padding:9px;border-radius:8px;margin-bottom:10px}
+.recording{animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.55}}
+@media(max-width:760px){.grid,.toolbar,.form{grid-template-columns:1fr}.full{grid-column:auto}.tabs{top:104px}.tabs button{font-size:13px;padding:11px 4px}.key{grid-template-columns:1fr auto}.key span:nth-child(2){grid-column:1/-1}}
 </style>
 </head>
 <body>
-<header><div class="wrap head"><div><h1>Bulgarian Learning Hub</h1><p>Listening, news, Arsenal and vocabulary from A0/A1 towards A2.</p><div class="version">Version 2.3 – guided listening</div></div><button id="installBtn">Install</button></div></header>
+<header><div class="wrap head"><div><h1>Bulgarian Learning Hub</h1><p>A1 listening and speaking practice with news, Arsenal and vocabulary.</p><div class="version">Consolidated release – A1 speaking focus</div></div><button id="installBtn">Install</button></div></header>
 <main>
 <nav class="tabs"><button class="active" data-tab="listening">Listening</button><button data-tab="news">News</button><button data-tab="arsenal">Arsenal</button><button data-tab="vocabulary">Vocabulary</button></nav>
 
-<section id="listeningTab"><div class="panel"><h2>This week’s listening focus</h2><p class="muted">Use guided listening first. Learn the key words, listen slowly, answer in Bulgarian, then try normal speed.</p></div><div class="toolbar"><input id="listenSearch" placeholder="Search listening"><select id="listenType"><option value="">All types</option><option>Vocabulary</option><option>Story</option><option>History</option></select><select id="listenLevel"><option value="">All levels</option><option>A0</option><option>A1</option><option>A2</option></select></div><div id="listeningCards" class="grid"></div></section>
-
-<section id="newsTab" class="hidden"><div class="panel"><h2>Guided Bulgarian news</h2><p class="muted">Each story now follows five steps: preview words, listen, answer questions, reveal harder words, and save useful vocabulary.</p></div><div id="newsCards" class="grid"></div></section>
-
-<section id="arsenalTab" class="hidden"><div class="panel"><h2>Guided Arsenal reporting</h2><p class="muted">The same learning structure, using recurring football vocabulary.</p></div><div id="arsenalCards" class="grid"></div></section>
-
-<section id="vocabularyTab" class="hidden"><div class="panel"><h2>Personal vocabulary notebook</h2><p class="muted">Words marked green, amber or red in listening exercises are saved here with their learning status.</p></div>
-<details open><summary>Add a word</summary><div class="form"><input id="wordBg" placeholder="Bulgarian word"><input id="wordEn" placeholder="English meaning"><input id="wordRoman" placeholder="Pronunciation hint"><select id="wordLevel"><option>A0</option><option selected>A1</option><option>A2</option></select><textarea id="wordExample" class="full" placeholder="Bulgarian example sentence"></textarea><button id="addWord" class="full">Add word</button></div></details>
-<div class="toolbar"><input id="wordSearch" placeholder="Search vocabulary"><select id="wordLevelFilter"><option value="">All levels</option><option>A0</option><option>A1</option><option>A2</option></select><select id="wordStatusFilter"><option value="">All statuses</option><option value="green">Green – I know it</option><option value="amber">Amber – almost</option><option value="red">Red – new</option><option value="fav">Favourites</option></select></div><div id="wordCards" class="grid"></div>
+<section id="listeningTab"><div class="panel"><h2>How to use each exercise</h2><p class="muted">Preview the key words, listen without reading, hear each question, answer aloud, check the Bulgarian answer, reveal English only when needed, then retell the story.</p></div><div id="listeningCards" class="grid"></div></section>
+<section id="newsTab" class="hidden"><div class="panel"><h2>A1 Bulgarian news</h2><p class="muted">Five guided exercises, adapted into short A1 Bulgarian.</p></div><div id="newsCards" class="grid"></div></section>
+<section id="arsenalTab" class="hidden"><div class="panel"><h2>A1 Arsenal reporting</h2><p class="muted">Five guided exercises built around recurring football vocabulary.</p></div><div id="arsenalCards" class="grid"></div></section>
+<section id="vocabularyTab" class="hidden"><div class="panel"><h2>Personal vocabulary notebook</h2><p class="muted">Words marked green, amber or red in exercises are saved here.</p></div>
+<details open><summary>Add a word</summary><div class="form"><input id="wordBg" placeholder="Bulgarian word"><input id="wordEn" placeholder="English meaning"><input id="wordRoman" placeholder="Pronunciation hint"><select id="wordLevel"><option selected>A1</option></select><textarea id="wordExample" class="full" placeholder="Bulgarian example sentence"></textarea><button id="addWord" class="full">Add word</button></div></details>
+<div class="toolbar"><input id="wordSearch" placeholder="Search vocabulary"><select id="wordStatusFilter"><option value="">All words</option><option value="green">Green – I know it</option><option value="amber">Amber – almost</option><option value="red">Red – new</option><option value="fav">Favourites</option></select></div><div id="wordCards" class="grid"></div>
 <details><summary>Backup and restore</summary><div class="form"><button id="exportWords" class="secondary">Export vocabulary</button><label><input id="importWordsFile" type="file" accept="application/json" hidden><button id="importWords" type="button" class="ghost" style="width:100%">Import vocabulary</button></label></div></details>
 </section>
 </main>
+
+<button id="askTutor" class="ask-fab">🎤 Ask tutor</button>
+<div id="tutorModal" class="modal hidden"><div class="modalbox"><h3>Ask the tutor</h3><div id="tutorContext" class="context">No article selected yet.</div><textarea id="tutorQuery" placeholder="Ask in Bulgarian or English…"></textarea><div id="tutorHeard" class="transcript">Your spoken question will appear here.</div><div class="modal-actions"><button id="tutorMic">🎤 Speak</button><button id="tutorSend" class="secondary">Ask ChatGPT</button><button id="tutorClose" class="ghost">Close</button></div><p class="muted">Known vocabulary questions can be answered aloud inside the app. More complex questions open ChatGPT with the article context and your question.</p></div></div>
+
 <script>
-const LISTENING=JSON.parse(localStorage.getItem("bgListeningHubItems")||"null")||[
-{id:"l1",title:"Learn How To Talk About Nationality in Bulgarian",creator:"BulgarianPod101.com",type:"Vocabulary",level:"A1",url:"https://open.spotify.com/episode/0jM2gvjhWNWmIi5TZUNbLi",notes:"Everyday nationality vocabulary."},
-{id:"l2",title:"Bulgarian Colours: Green and Yellow",creator:"Learn Bulgarian with Fexingo",type:"Vocabulary",level:"A0",url:"https://open.spotify.com/episode/09fuAabuL1vJKSFIQuzL7g",notes:"Simple themed vocabulary."},
-{id:"l3",title:"Summer Showers on булевард „Витоша“",creator:"FluentFiction Bulgarian",type:"Story",level:"A2",url:"https://open.spotify.com/episode/7lFqPOIj3JNCCpEVdGqmH7",notes:"A more challenging story."}
-];
-
-const NEWS=[
-{
-id:"n1",title:"100-те национални туристически обекта отбелязват 60 години",level:"A2",source:"БТА",url:"https://www.bta.bg/en/news/",
-intro:"Тази новина е за известни места в България и за хората, които ги посещават.",
-text:"Движението „Опознай България – 100 национални туристически обекта“ отбелязва 60 години. То насърчава хората да посещават исторически, културни и природни забележителности в страната. Много туристи събират печати от различните обекти.",
-easy:"Движението помага на хората да опознаят важни места в България.",
-key:[
-{bg:"забележителност",en:"place of interest; landmark",level:"A2"},
-{bg:"посещавам",en:"to visit",level:"A1"},
-{bg:"обект",en:"site; place",level:"A1"},
-{bg:"турист",en:"tourist",level:"A0"},
-{bg:"годишнина",en:"anniversary",level:"A2"}
-],
-hard:[
-{bg:"насърчавам",en:"to encourage",level:"A2"},
-{bg:"печат",en:"stamp",level:"A1"},
-{bg:"природен",en:"natural",level:"A1"}
-],
-questions:[
-{q:"За какво е новината?",a:"За 60 години от създаването на движението."},
-{q:"Какви места посещават хората?",a:"Исторически, културни и природни забележителности."},
-{q:"Какво събират много туристи?",a:"Печати."}
-]
-},
-{
-id:"n2",title:"Българският паспорт е на 11-о място в световна класация",level:"A2",source:"БТА",url:"https://www.bta.bg/bg/news",
-intro:"Тази новина е за пътуване и за силата на българския паспорт.",
-text:"Българският паспорт е на 11-о място в световна класация. Българските граждани могат да пътуват до много държави без предварителна виза. Класацията сравнява паспортите според броя на достъпните дестинации.",
-easy:"С български паспорт може да се пътува лесно до много държави.",
-key:[
-{bg:"паспорт",en:"passport",level:"A0"},
-{bg:"класация",en:"ranking",level:"A2"},
-{bg:"пътувам",en:"to travel",level:"A0"},
-{bg:"държава",en:"country; state",level:"A0"},
-{bg:"виза",en:"visa",level:"A1"}
-],
-hard:[
-{bg:"предварителен",en:"prior; in advance",level:"A2"},
-{bg:"достъпен",en:"accessible; available",level:"A2"},
-{bg:"дестинация",en:"destination",level:"A2"}
-],
-questions:[
-{q:"На кое място е българският паспорт?",a:"На 11-о място."},
-{q:"До какво могат да пътуват българските граждани?",a:"До много държави."},
-{q:"Какво сравнява класацията?",a:"Паспортите."}
-]
-}
-];
-
-const ARSENAL=[
-{
-id:"a1",title:"Арсенал спечели титлата във Висшата лига",level:"A1",source:"Sportal.bg",url:"https://sportal.bg/news-2026051921550472080",
-intro:"Тази новина е за Арсенал и успеха на отбора през сезона.",
-text:"Арсенал стана шампион на Англия и спечели титлата във Висшата лига. Отборът завърши сезона с добра преднина пред своите съперници. Феновете отпразнуваха успеха в Лондон.",
-easy:"Арсенал завърши на първо място и стана шампион.",
-key:[
-{bg:"шампион",en:"champion",level:"A1"},
-{bg:"титла",en:"title; championship",level:"A1"},
-{bg:"отбор",en:"team",level:"A0"},
-{bg:"сезон",en:"season",level:"A1"},
-{bg:"фен",en:"supporter; fan",level:"A1"}
-],
-hard:[
-{bg:"преднина",en:"lead; advantage",level:"A2"},
-{bg:"съперник",en:"opponent; rival",level:"A2"},
-{bg:"отпразнувам",en:"to celebrate",level:"A2"}
-],
-questions:[
-{q:"Кой стана шампион?",a:"Арсенал."},
-{q:"Къде спечели титлата Арсенал?",a:"Във Висшата лига."},
-{q:"Какво направиха феновете?",a:"Отпразнуваха успеха."}
-]
-},
-{
-id:"a2",title:"Арсенал започна преговори за трансфер",level:"A2",source:"Sportal.bg",url:"https://sportal.bg/news-2026062609065537690",
-intro:"Тази новина е за възможен нов футболист в Арсенал.",
-text:"Арсенал започна преговори за нов трансфер. Ръководството на клуба подготвя оферта за футболист, който може да подсили отбора. Разговорите между клубовете продължават.",
-easy:"Арсенал иска да купи нов футболист.",
-key:[
-{bg:"трансфер",en:"transfer",level:"A1"},
-{bg:"оферта",en:"offer; bid",level:"A1"},
-{bg:"клуб",en:"club",level:"A0"},
-{bg:"футболист",en:"footballer",level:"A0"},
-{bg:"разговор",en:"discussion; conversation",level:"A1"}
-],
-hard:[
-{bg:"преговори",en:"negotiations",level:"A2"},
-{bg:"ръководство",en:"management; leadership",level:"A2"},
-{bg:"подсилвам",en:"to strengthen",level:"A2"}
-],
-questions:[
-{q:"За какво започна преговори Арсенал?",a:"За нов трансфер."},
-{q:"Какво подготвя ръководството?",a:"Оферта."},
-{q:"Какво продължава?",a:"Разговорите между клубовете."}
-]
-}
-];
-
-let words=JSON.parse(localStorage.getItem("bgVocabularyWords")||"null")||[
-{id:"w1",bg:"новина",en:"news item",roman:"novina",level:"A0",example:"Чета кратка новина.",fav:true,status:"green"},
-{id:"w2",bg:"отбор",en:"team",roman:"otbor",level:"A0",example:"Арсенал е силен отбор.",fav:true,status:"green"},
-{id:"w3",bg:"победа",en:"victory; win",roman:"pobeda",level:"A1",example:"Отборът постигна важна победа.",fav:false,status:"amber"}
-];
-
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-const levelTag=l=>`<span class="tag ${l.toLowerCase()}">${l}</span>`;
+const levelTag=()=>'<span class="tag a1">A1</span>';
+let currentContext={title:"",text:"",translation:""};
+let words=JSON.parse(localStorage.getItem("bgVocabularyWords")||"null")||[
+{id:"w1",bg:"новина",en:"news item",roman:"novina",level:"A1",example:"Чета кратка новина.",fav:true,status:"green"},
+{id:"w2",bg:"отбор",en:"team",roman:"otbor",level:"A1",example:"Арсенал е силен отбор.",fav:true,status:"green"},
+{id:"w3",bg:"победа",en:"victory; win",roman:"pobeda",level:"A1",example:"Отборът постигна победа.",fav:false,status:"amber"}
+];
+
+const LISTENING=[
+{title:"Bulgarian nationality vocabulary",creator:"BulgarianPod101.com",url:"https://open.spotify.com/episode/0jM2gvjhWNWmIi5TZUNbLi"},
+{title:"Bulgarian colours",creator:"Learn Bulgarian with Fexingo",url:"https://open.spotify.com/episode/09fuAabuL1vJKSFIQuzL7g"},
+{title:"Short Bulgarian story on Vitosha Boulevard",creator:"FluentFiction Bulgarian",url:"https://open.spotify.com/episode/7lFqPOIj3JNCCpEVdGqmH7"}
+];
+
+const EXERCISES=[
+{
+section:"news",id:"n1",title:"Сто туристически обекта празнуват 60 години",source:"БТА",url:"https://www.bta.bg/en/news/",
+intro:"Новината е за известни места в България.",
+text:"Движението „Сто национални туристически обекта“ празнува 60 години. То помага на хората да посещават важни места в България. Сред тях има музеи, манастири, планини и исторически паметници. Много туристи събират печати от местата, които посещават.",
+translation:"The ‘One Hundred National Tourist Sites’ movement is celebrating 60 years. It helps people visit important places in Bulgaria. These include museums, monasteries, mountains and historical monuments. Many tourists collect stamps from the places they visit.",
+easy:"Хората посещават важни места и събират печати.",
+key:[["празнувам","to celebrate"],["посещавам","to visit"],["място","place"],["музей","museum"],["печат","stamp"]],
+questions:[
+["Какво празнува движението?","То празнува 60 години.","What is the movement celebrating?","It is celebrating 60 years."],
+["Какви места посещават хората?","Те посещават музеи, манастири, планини и паметници.","What kinds of places do people visit?","They visit museums, monasteries, mountains and monuments."],
+["Какво събират много туристи?","Те събират печати.","What do many tourists collect?","They collect stamps."]
+],
+hard:[["движение","movement"],["манастир","monastery"],["паметник","monument"]]
+},
+{
+section:"news",id:"n2",title:"Българският паспорт е на единадесето място",source:"БТА",url:"https://www.bta.bg/en/news/",
+intro:"Новината е за пътуване с български паспорт.",
+text:"Българският паспорт е на единадесето място в световна класация. Българските граждани могат да пътуват до много държави без виза. Класацията сравнява паспортите според броя на държавите, които хората могат да посетят лесно.",
+translation:"The Bulgarian passport is in eleventh place in a global ranking. Bulgarian citizens can travel to many countries without a visa. The ranking compares passports according to the number of countries that people can visit easily.",
+easy:"С български паспорт може да се пътува лесно до много държави.",
+key:[["паспорт","passport"],["държава","country"],["пътувам","to travel"],["виза","visa"],["място","place; position"]],
+questions:[
+["На кое място е българският паспорт?","На единадесето място.","What position is the Bulgarian passport in?","It is in eleventh place."],
+["До колко държави могат да пътуват хората?","До много държави.","To how many countries can people travel?","To many countries."],
+["Какво сравнява класацията?","Тя сравнява паспортите.","What does the ranking compare?","It compares passports."]
+],
+hard:[["класация","ranking"],["гражданин","citizen"],["сравнявам","to compare"]]
+},
+{
+section:"news",id:"n3",title:"Повече от двеста души участват във велофестивал",source:"БТА",url:"https://www.bta.bg/en/news/sport",
+intro:"Новината е за колоездене в българска планина.",
+text:"Повече от двеста колоездачи участват във велофестивал в Пампорово. Има различни състезания за деца и възрастни. Участниците карат по планински маршрути. Организаторите казват, че безопасността е много важна.",
+translation:"More than two hundred cyclists are taking part in a bike festival in Pamporovo. There are different races for children and adults. The participants ride along mountain routes. The organisers say that safety is very important.",
+easy:"Много хора карат велосипеди в Пампорово.",
+key:[["колоездач","cyclist"],["състезание","competition; race"],["участник","participant"],["планински","mountain"],["безопасност","safety"]],
+questions:[
+["Къде е велофестивалът?","В Пампорово.","Where is the bike festival?","In Pamporovo."],
+["За кого има състезания?","За деца и възрастни.","Who are the races for?","For children and adults."],
+["Какво е много важно?","Безопасността.","What is very important?","Safety."]
+],
+hard:[["маршрут","route"],["организатор","organiser"],["възрастен","adult"]]
+},
+{
+section:"news",id:"n4",title:"България ще играе с Дания и Румъния",source:"БТА",url:"https://www.bta.bg/en/news/sport",
+intro:"Новината е за българския национален отбор по баскетбол.",
+text:"България ще играе с Дания и Румъния в квалификации за европейско първенство по баскетбол. Отборите ще играят няколко мача. Българските баскетболисти искат да се класират за следващата фаза.",
+translation:"Bulgaria will play Denmark and Romania in qualifiers for the European basketball championship. The teams will play several matches. The Bulgarian basketball players want to qualify for the next stage.",
+easy:"България ще играе важни баскетболни мачове.",
+key:[["баскетбол","basketball"],["квалификация","qualifier"],["първенство","championship"],["мач","match"],["класирам се","to qualify"]],
+questions:[
+["С кои държави ще играе България?","С Дания и Румъния.","Which countries will Bulgaria play?","Denmark and Romania."],
+["Колко мача ще играят отборите?","Няколко мача.","How many matches will the teams play?","Several matches."],
+["Какво искат българските баскетболисти?","Да се класират за следващата фаза.","What do the Bulgarian basketball players want?","To qualify for the next stage."]
+],
+hard:[["фаза","stage"],["национален","national"],["следващ","next"]]
+},
+{
+section:"news",id:"n5",title:"В Банско започна фестивал за велосипеди",source:"БТА",url:"https://www.bta.bg/en/news/sport",
+intro:"Новината е за спортно събитие в Банско.",
+text:"В Банско започна вторият фестивал за велосипеди. Програмата включва състезания, демонстрации и занимания за семейства. Гостите могат да гледат професионални колоездачи и да опитат различни маршрути.",
+translation:"The second cycling festival has begun in Bansko. The programme includes races, demonstrations and activities for families. Visitors can watch professional cyclists and try different routes.",
+easy:"В Банско има спортен фестивал за семейства и колоездачи.",
+key:[["започвам","to begin"],["програма","programme"],["семейство","family"],["гост","visitor; guest"],["опитвам","to try"]],
+questions:[
+["Къде започна фестивалът?","В Банско.","Where did the festival begin?","In Bansko."],
+["Какво включва програмата?","Състезания, демонстрации и занимания.","What does the programme include?","Races, demonstrations and activities."],
+["Кого могат да гледат гостите?","Професионални колоездачи.","Whom can visitors watch?","Professional cyclists."]
+],
+hard:[["демонстрация","demonstration"],["занимание","activity"],["професионален","professional"]]
+},
+{
+section:"arsenal",id:"a1",title:"Арсенал завърши сезона като шампион",source:"Sportal.bg",url:"https://sportal.bg/news-2026052413534601638",
+intro:"Новината е за последния мач на Арсенал през сезона.",
+text:"Арсенал победи Кристъл Палас с два на един. След този мач отборът завърши сезона на първо място. Играчите и феновете празнуваха титлата. Арсенал събра повече точки от Манчестър Сити.",
+translation:"Arsenal beat Crystal Palace two-one. After this match, the team finished the season in first place. The players and supporters celebrated the title. Arsenal collected more points than Manchester City.",
+easy:"Арсенал спечели последния мач и стана шампион.",
+key:[["побеждавам","to beat; defeat"],["завършвам","to finish"],["първо място","first place"],["точка","point"],["титла","title"]],
+questions:[
+["Кого победи Арсенал?","Кристъл Палас.","Whom did Arsenal beat?","Crystal Palace."],
+["На кое място завърши отборът?","На първо място.","In what position did the team finish?","In first place."],
+["Какво празнуваха играчите и феновете?","Титлата.","What did the players and supporters celebrate?","The title."]
+],
+hard:[["събирам","to collect"],["шампион","champion"],["фен","supporter; fan"]]
+},
+{
+section:"arsenal",id:"a2",title:"Артета ще получи нов договор",source:"Sportal.bg",url:"https://sportal.bg/news-2026052110000708844",
+intro:"Новината е за треньора на Арсенал.",
+text:"Ръководството на Арсенал иска да предложи нов договор на Микел Артета. Клубът е доволен от работата на треньора. Новият договор може да бъде за още две години.",
+translation:"Arsenal’s management wants to offer Mikel Arteta a new contract. The club is pleased with the coach’s work. The new contract may be for another two years.",
+easy:"Арсенал иска Артета да остане по-дълго в клуба.",
+key:[["договор","contract"],["треньор","coach"],["клуб","club"],["доволен","pleased"],["предлагам","to offer"]],
+questions:[
+["На кого Арсенал иска да предложи нов договор?","На Микел Артета.","To whom does Arsenal want to offer a new contract?","Mikel Arteta."],
+["От какво е доволен клубът?","От работата на треньора.","What is the club pleased with?","The coach’s work."],
+["За колко години може да бъде договорът?","За още две години.","How long may the contract be?","Another two years."]
+],
+hard:[["ръководство","management"],["оставам","to stay"],["работа","work"]]
+},
+{
+section:"arsenal",id:"a3",title:"Арсенал работи по шест трансфера",source:"Sportal.bg",url:"https://sportal.bg/news-2026070112404727821",
+intro:"Новината е за нови футболисти през лятото.",
+text:"Арсенал работи по шест възможни трансфера. Клубът вече купи един нов защитник. Сега ръководството води разговори за още футболисти. Основната цел е отборът да стане по-силен.",
+translation:"Arsenal is working on six possible transfers. The club has already bought one new defender. The management is now holding talks about more players. The main aim is for the team to become stronger.",
+easy:"Арсенал иска да купи още нови футболисти.",
+key:[["трансфер","transfer"],["защитник","defender"],["разговор","discussion; talks"],["цел","aim"],["силен","strong"]],
+questions:[
+["По колко трансфера работи Арсенал?","По шест трансфера.","How many transfers is Arsenal working on?","Six transfers."],
+["Какъв футболист вече купи клубът?","Нов защитник.","What kind of player has the club already bought?","A new defender."],
+["Каква е основната цел?","Отборът да стане по-силен.","What is the main aim?","For the team to become stronger."]
+],
+hard:[["възможен","possible"],["основен","main"],["водя разговори","to hold talks"]]
+},
+{
+section:"arsenal",id:"a4",title:"Арсенал показа новия си екип",source:"Sportal.bg",url:"https://sportal.bg/news-2026051509145245284",
+intro:"Новината е за новите футболни фланелки.",
+text:"Арсенал показа новия си екип за следващия сезон. Дизайнът е свързан със стадион „Емиратс“. Играчите ще носят новите фланелки в важни мачове.",
+translation:"Arsenal presented its new kit for the next season. The design is connected with the Emirates Stadium. The players will wear the new shirts in important matches.",
+easy:"Арсенал има нови фланелки за следващия сезон.",
+key:[["екип","kit"],["фланелка","shirt; jersey"],["следващ","next"],["стадион","stadium"],["нося","to wear"]],
+questions:[
+["Какво показа Арсенал?","Новия си екип.","What did Arsenal present?","Its new kit."],
+["С какво е свързан дизайнът?","Със стадион „Емиратс“.","What is the design connected with?","The Emirates Stadium."],
+["Кога играчите ще носят фланелките?","В важни мачове.","When will the players wear the shirts?","In important matches."]
+],
+hard:[["дизайн","design"],["свързан","connected"],["важен","important"]]
+},
+{
+section:"arsenal",id:"a5",title:"Арсенал победи Спортинг с един на нула",source:"Sportal.bg",url:"https://sportal.bg/news-2026040808035328040",
+intro:"Новината е за мач в Шампионската лига.",
+text:"Арсенал победи Спортинг с един на нула в Лисабон. Кай Хавертц отбеляза победния гол в края на мача. Победата даде предимство на Арсенал преди втория мач.",
+translation:"Arsenal beat Sporting one-nil in Lisbon. Kai Havertz scored the winning goal at the end of the match. The victory gave Arsenal an advantage before the second match.",
+easy:"Арсенал спечели важен мач с гол на Хавертц.",
+key:[["отбелязвам","to score"],["гол","goal"],["край","end"],["победа","victory"],["втори","second"]],
+questions:[
+["Какъв беше резултатът?","Един на нула за Арсенал.","What was the score?","One-nil to Arsenal."],
+["Кой отбеляза гола?","Кай Хавертц.","Who scored the goal?","Kai Havertz."],
+["Какво даде победата на Арсенал?","Предимство преди втория мач.","What did the victory give Arsenal?","An advantage before the second match."]
+],
+hard:[["победен","winning"],["предимство","advantage"],["преди","before"]]
+}
+];
+
 function saveWords(){localStorage.setItem("bgVocabularyWords",JSON.stringify(words))}
-function speak(text,rate){if(!("speechSynthesis" in window)){alert("Speech is not supported on this device.");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="bg-BG";u.rate=rate;speechSynthesis.speak(u)}
-function askUrl(word){return "https://chatgpt.com/?q="+encodeURIComponent(`Explain the Bulgarian word "${word}" in UK English. Give its meaning, pronunciation, part of speech, common forms, two A1-A2 example sentences with translations, and common mistakes.`)}
-function upsertWord(item,status){
- const existing=words.find(w=>w.bg.toLowerCase()===item.bg.toLowerCase());
- if(existing){existing.en=item.en||existing.en;existing.level=item.level||existing.level;existing.status=status||existing.status||"red";}
- else words.unshift({id:crypto.randomUUID(),bg:item.bg,en:item.en,roman:"",level:item.level||"A1",example:"",fav:false,status:status||"red"});
- saveWords();renderWords();
-}
-function statusButton(item,status,label,cls){return `<button class="${cls}" onclick='markWord(${JSON.stringify(item)},${JSON.stringify(status)})'>${label}</button>`}
-function markWord(item,status){upsertWord(item,status)}
+function speak(text,rate=0.78){if(!("speechSynthesis" in window)){alert("Speech is not supported on this device.");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="bg-BG";u.rate=rate;speechSynthesis.speak(u)}
+function askUrl(query){return "https://chatgpt.com/?q="+encodeURIComponent(query)}
+function upsertWord(bg,en,status="red"){let w=words.find(x=>x.bg.toLowerCase()===bg.toLowerCase());if(w){w.en=en||w.en;w.status=status}else{words.unshift({id:crypto.randomUUID(),bg,en,roman:"",level:"A1",example:"",fav:false,status})}saveWords();renderWords()}
+function markWord(bg,en,status){upsertWord(bg,en,status)}
+function setContext(x){currentContext={title:x.title,text:x.text,translation:x.translation};$("tutorContext").textContent=`Current article: ${x.title}`}
+
 function renderListening(){
- const q=$("listenSearch").value.toLowerCase(),t=$("listenType").value,l=$("listenLevel").value;
- $("listeningCards").innerHTML=LISTENING.filter(x=>(!q||(`${x.title} ${x.creator}`).toLowerCase().includes(q))&&(!t||x.type===t)&&(!l||x.level===l)).map(x=>`<article class="card"><div class="tags"><span class="tag">${esc(x.type)}</span>${levelTag(x.level)}</div><h3>${esc(x.title)}</h3><div class="meta">${esc(x.creator)}</div><p>${esc(x.notes)}</p><a class="btn spotify" href="${esc(x.url)}" target="_blank">Open Spotify</a></article>`).join("");
+ $("listeningCards").innerHTML=LISTENING.map(x=>`<article class="card"><div class="tags">${levelTag()}<span class="tag">Spotify</span></div><h3>${esc(x.title)}</h3><div class="meta">${esc(x.creator)}</div><div class="actions"><a class="btn spotify" href="${esc(x.url)}" target="_blank">Open Spotify</a></div></article>`).join("");
 }
-function wordPreview(item){return `<div class="key-word"><strong>${esc(item.bg)}</strong><span>${esc(item.en)}</span><button class="ghost" onclick='speak(${JSON.stringify(item.bg)},0.72)'>🔊</button></div>`}
-function questionBlock(q,i,id){return `<div class="question"><strong>${i+1}. ${esc(q.q)}</strong><div class="actions"><button class="ghost" onclick="toggleAnswer('${id}-${i}')">Покажи отговора</button></div><div id="${id}-${i}" class="answer hidden">${esc(q.a)}</div></div>`}
-function difficultWord(item){return `<div class="key-word"><strong>${esc(item.bg)}</strong><span>${esc(item.en)}</span><div class="traffic">${statusButton(item,"green","🟢 Знам","success")}${statusButton(item,"amber","🟡 Почти","amber")}${statusButton(item,"red","🔴 Ново","danger")}</div></div>`}
-function exerciseCard(x){
- return `<article class="card">
- <div class="tags">${levelTag(x.level)}<span class="tag">${esc(x.source)}</span></div>
- <h3>${esc(x.title)}</h3>
+function keyRow(k){return `<div class="key"><strong>${esc(k[0])}</strong><span>${esc(k[1])}</span><button class="ghost" onclick='speak(${JSON.stringify(k[0])},0.7)'>🔊</button></div>`}
+function hardRow(k){return `<div class="key"><strong>${esc(k[0])}</strong><span>${esc(k[1])}</span><div class="traffic"><button class="success" onclick='markWord(${JSON.stringify(k[0])},${JSON.stringify(k[1])},"green")'>🟢</button><button class="amber" onclick='markWord(${JSON.stringify(k[0])},${JSON.stringify(k[1])},"amber")'>🟡</button><button class="danger" onclick='markWord(${JSON.stringify(k[0])},${JSON.stringify(k[1])},"red")'>🔴</button></div></div>`}
+function questionBlock(x,q,i){
+ const id=`${x.id}-q${i}`;
+ return `<div class="question">
+ <strong>Въпрос ${i+1}</strong>
+ <div class="actions"><button onclick='setContextById("${x.id}");speak(${JSON.stringify(q[0])},0.75)'>🔊 Чуй въпроса</button><button class="secondary" onclick='recordAnswer("${id}")'>🎤 Отговори</button><button class="ghost" onclick='toggle("${id}-qtext")'>Покажи въпроса</button></div>
+ <div id="${id}-qtext" class="answer hidden">${esc(q[0])}<div><button class="ghost" onclick='toggle("${id}-qtrans")'>Покажи превода</button></div><div id="${id}-qtrans" class="translation hidden">${esc(q[2])}</div></div>
+ <div id="${id}-heard" class="transcript">Твоят отговор ще се появи тук.</div>
+ <div class="actions"><button class="success" onclick='toggle("${id}-answer")'>Покажи отговора</button></div>
+ <div id="${id}-answer" class="answer hidden"><strong>${esc(q[1])}</strong><div><button class="ghost" onclick='toggle("${id}-atrans")'>Покажи превода</button></div><div id="${id}-atrans" class="translation hidden">${esc(q[3])}</div></div>
+ </div>`;
+}
+function card(x){
+ return `<article class="card" onclick='setContextById("${x.id}")'>
+ <div class="tags">${levelTag()}<span class="tag">${esc(x.source)}</span></div><h3>${esc(x.title)}</h3>
  <div class="intro"><strong>Преди да слушаш:</strong><br>${esc(x.intro)}</div>
- <div class="exercise"><h4>1. Ключови думи</h4>${x.key.map(wordPreview).join("")}</div>
- <div class="exercise"><h4>2. Слушай</h4><div class="actions"><button onclick='speak(${JSON.stringify(x.text)},0.68)'>🐢 Бавно</button><button class="secondary" onclick='speak(${JSON.stringify(x.text)},0.92)'>▶ Нормално</button><button class="ghost" onclick='speak(${JSON.stringify(x.text)},1.05)'>⚡ Предизвикателство</button></div></div>
- <div class="exercise"><h4>3. Въпроси</h4>${x.questions.map((q,i)=>questionBlock(q,i,x.id)).join("")}</div>
- <div class="exercise"><h4>4. По-лесно обобщение</h4><div class="easy-summary">${esc(x.easy)}</div><div class="actions"><button class="ghost" onclick='speak(${JSON.stringify(x.easy)},0.76)'>🔊 Чуй обобщението</button></div></div>
- <div class="exercise"><h4>5. По-трудни думи</h4><button class="secondary" onclick="toggleHard('${x.id}-hard')">Покажи думите</button><div id="${x.id}-hard" class="hidden">${x.hard.map(difficultWord).join("")}</div></div>
+ <div class="exercise"><h4>1. Ключови думи</h4>${x.key.map(keyRow).join("")}</div>
+ <div class="exercise"><h4>2. Слушай</h4><div class="actions"><button onclick='event.stopPropagation();setContextById("${x.id}");speak(${JSON.stringify(x.text)},0.67)'>🐢 Бавно</button><button class="secondary" onclick='event.stopPropagation();setContextById("${x.id}");speak(${JSON.stringify(x.text)},0.9)'>▶ Нормално</button></div></div>
+ <div class="exercise"><h4>3. Чуй и отговори</h4>${x.questions.map((q,i)=>questionBlock(x,q,i)).join("")}</div>
+ <div class="exercise"><h4>4. Лесно обобщение</h4><div class="easy">${esc(x.easy)}</div><div class="actions"><button class="ghost" onclick='event.stopPropagation();speak(${JSON.stringify(x.easy)},0.74)'>🔊 Чуй</button></div></div>
+ <div class="exercise"><h4>5. По-трудни думи</h4><button class="secondary" onclick='event.stopPropagation();toggle("${x.id}-hard")'>Покажи думите</button><div id="${x.id}-hard" class="hidden">${x.hard.map(hardRow).join("")}</div></div>
+ <div class="exercise"><h4>6. Разкажи новината</h4><p class="muted">Кажи с две или три изречения какво се случи.</p><div class="actions"><button onclick='event.stopPropagation();recordRetell("${x.id}")'>🎤 Запиши разказа</button><a class="btn ghost" href="${askUrl(`I am learning Bulgarian at A1. Here is the source text: ${x.text} I will paste my spoken retelling next. Correct it gently in UK English, give a better A1 Bulgarian version, and explain no more than three improvements.`)}" target="_blank">Ask ChatGPT for feedback</a></div><div id="${x.id}-retell" class="transcript">Твоят разказ ще се появи тук.</div></div>
+ <div class="exercise"><h4>7. Текст след упражнението</h4><button class="secondary" onclick='event.stopPropagation();toggle("${x.id}-text")'>Покажи текста</button><div id="${x.id}-text" class="hidden"><div class="fulltext">${esc(x.text)}</div><div class="actions"><button class="ghost" onclick='event.stopPropagation();toggle("${x.id}-translation")'>Покажи превода</button></div><div id="${x.id}-translation" class="translation hidden">${esc(x.translation)}</div></div></div>
  <div class="actions"><a class="btn secondary" href="${esc(x.url)}" target="_blank">Open original source</a></div>
  </article>`;
 }
-function toggleAnswer(id){$(id).classList.toggle("hidden")}
-function toggleHard(id){$(id).classList.toggle("hidden")}
-function renderStories(){$("newsCards").innerHTML=NEWS.map(exerciseCard).join("");$("arsenalCards").innerHTML=ARSENAL.map(exerciseCard).join("")}
+function renderExercises(){$("newsCards").innerHTML=EXERCISES.filter(x=>x.section==="news").map(card).join("");$("arsenalCards").innerHTML=EXERCISES.filter(x=>x.section==="arsenal").map(card).join("")}
+function setContextById(id){const x=EXERCISES.find(e=>e.id===id);if(x)setContext(x)}
+function toggle(id){$(id).classList.toggle("hidden")}
+
+function recogniser(lang,onResult,button){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){alert("Chrome speech recognition is not available on this device.");return}
+ const r=new SR();r.lang=lang;r.interimResults=false;r.maxAlternatives=1;
+ if(button)button.classList.add("recording");
+ r.onresult=e=>onResult(e.results[0][0].transcript);
+ r.onerror=e=>alert("I could not hear that clearly. Please try again.");
+ r.onend=()=>{if(button)button.classList.remove("recording")};
+ r.start();
+}
+function recordAnswer(id){const btn=event.currentTarget;recogniser("bg-BG",t=>$(id+"-heard").textContent=t,btn)}
+function recordRetell(id){const btn=event.currentTarget;recogniser("bg-BG",t=>$(id+"-retell").textContent=t,btn)}
+
 function renderWords(){
- const q=$("wordSearch").value.toLowerCase(),l=$("wordLevelFilter").value,f=$("wordStatusFilter").value;
- const list=words.filter(x=>(!q||(`${x.bg} ${x.en} ${x.roman}`).toLowerCase().includes(q))&&(!l||x.level===l)&&(!f||(f==="fav"?x.fav:x.status===f)));
- $("wordCards").innerHTML=list.map(x=>`<article class="card status-${esc(x.status||"red")}"><div class="tags">${levelTag(x.level)}<span class="tag">${x.status==="green"?"🟢 I know it":x.status==="amber"?"🟡 Almost":"🔴 New"}</span>${x.fav?'<span class="tag">Favourite</span>':''}</div><div class="word">${esc(x.bg)}</div>${x.roman?`<div class="roman">${esc(x.roman)}</div>`:""}<p>${esc(x.en)}</p>${x.example?`<div class="example">${esc(x.example)}</div>`:""}<div class="actions"><button onclick='speak(${JSON.stringify(x.bg)},0.72)'>🔊 Pronounce</button><button class="success" onclick="setStatus('${x.id}','green')">🟢</button><button class="amber" onclick="setStatus('${x.id}','amber')">🟡</button><button class="danger" onclick="setStatus('${x.id}','red')">🔴</button><button class="${x.fav?'success':'secondary'}" onclick="toggleFavourite('${x.id}')">${x.fav?'Favourite':'Add favourite'}</button><a class="btn ghost" href="${askUrl(x.bg)}" target="_blank">Ask ChatGPT</a><button class="danger" onclick="removeWord('${x.id}')">Remove</button></div></article>`).join("")||'<div class="panel">No matching words.</div>';
+ const q=$("wordSearch").value.toLowerCase(),f=$("wordStatusFilter").value;
+ const list=words.filter(x=>(!q||(`${x.bg} ${x.en} ${x.roman}`).toLowerCase().includes(q))&&(!f||(f==="fav"?x.fav:x.status===f)));
+ $("wordCards").innerHTML=list.map(x=>`<article class="card status-${esc(x.status||"red")}"><div class="tags">${levelTag()}<span class="tag">${x.status==="green"?"🟢 I know it":x.status==="amber"?"🟡 Almost":"🔴 New"}</span>${x.fav?'<span class="tag">Favourite</span>':''}</div><div class="word">${esc(x.bg)}</div>${x.roman?`<div class="roman">${esc(x.roman)}</div>`:""}<p>${esc(x.en)}</p>${x.example?`<div class="example">${esc(x.example)}</div>`:""}<div class="actions"><button onclick='speak(${JSON.stringify(x.bg)},0.7)'>🔊</button><button class="success" onclick="setStatus('${x.id}','green')">🟢</button><button class="amber" onclick="setStatus('${x.id}','amber')">🟡</button><button class="danger" onclick="setStatus('${x.id}','red')">🔴</button><button class="${x.fav?'success':'secondary'}" onclick="toggleFavourite('${x.id}')">${x.fav?'Favourite':'Add favourite'}</button><a class="btn ghost" href="${askUrl(`Explain the Bulgarian word "${x.bg}" in UK English. Give meaning, pronunciation, grammar, two A1 examples with translations, and common mistakes.`)}" target="_blank">Ask ChatGPT</a><button class="danger" onclick="removeWord('${x.id}')">Remove</button></div></article>`).join("")||'<div class="panel">No matching words.</div>';
 }
 function setStatus(id,status){words=words.map(w=>w.id===id?{...w,status}:w);saveWords();renderWords()}
 function toggleFavourite(id){words=words.map(w=>w.id===id?{...w,fav:!w.fav}:w);saveWords();renderWords()}
 function removeWord(id){words=words.filter(w=>w.id!==id);saveWords();renderWords()}
+
+function localTutor(query){
+ const lower=query.toLowerCase();
+ const match=words.find(w=>lower.includes(w.bg.toLowerCase()));
+ if(match){
+   const answer=`${match.bg} означава ${match.en}.`;
+   speak(answer,0.72);
+   $("tutorHeard").textContent=answer;
+   return true;
+ }
+ if(lower.includes("по-бавно")||lower.includes("slower")){
+   if(currentContext.text){speak(currentContext.text,0.62);$("tutorHeard").textContent="Повтарям текста по-бавно.";return true}
+ }
+ if(lower.includes("повтори")||lower.includes("repeat")){
+   if(currentContext.text){speak(currentContext.text,0.75);$("tutorHeard").textContent="Повтарям текста.";return true}
+ }
+ return false;
+}
+function openTutorChat(){
+ const q=$("tutorQuery").value.trim()||$("tutorHeard").textContent.trim();
+ if(!q){alert("Please ask or type a question first.");return}
+ if(localTutor(q))return;
+ const prompt=`I am an A1 Bulgarian learner. Answer in simple Bulgarian first, then give a brief UK English explanation. Current article title: ${currentContext.title||"none"}. Current Bulgarian text: ${currentContext.text||"none"}. My question: ${q}. Keep the answer concise and suitable for spoken practice.`;
+ window.open(askUrl(prompt),"_blank");
+ speak("Отварям ChatGPT с твоя въпрос.",0.75);
+}
+
 document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));btn.classList.add("active");["listening","news","arsenal","vocabulary"].forEach(t=>$(t+"Tab").classList.toggle("hidden",t!==btn.dataset.tab))}));
-["listenSearch","listenType","listenLevel"].forEach(id=>$(id).addEventListener("input",renderListening));
-["wordSearch","wordLevelFilter","wordStatusFilter"].forEach(id=>$(id).addEventListener("input",renderWords));
-$("addWord").addEventListener("click",()=>{const bg=$("wordBg").value.trim(),en=$("wordEn").value.trim();if(!bg||!en){alert("Enter the Bulgarian word and English meaning.");return}words.unshift({id:crypto.randomUUID(),bg,en,roman:$("wordRoman").value.trim(),level:$("wordLevel").value,example:$("wordExample").value.trim(),fav:false,status:"red"});["wordBg","wordEn","wordRoman","wordExample"].forEach(id=>$(id).value="");saveWords();renderWords()});
+$("wordSearch").addEventListener("input",renderWords);$("wordStatusFilter").addEventListener("input",renderWords);
+$("addWord").addEventListener("click",()=>{const bg=$("wordBg").value.trim(),en=$("wordEn").value.trim();if(!bg||!en){alert("Enter the Bulgarian word and English meaning.");return}words.unshift({id:crypto.randomUUID(),bg,en,roman:$("wordRoman").value.trim(),level:"A1",example:$("wordExample").value.trim(),fav:false,status:"red"});["wordBg","wordEn","wordRoman","wordExample"].forEach(id=>$(id).value="");saveWords();renderWords()});
 $("exportWords").addEventListener("click",()=>{const b=new Blob([JSON.stringify(words,null,2)],{type:"application/json"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="bulgarian-vocabulary.json";a.click();URL.revokeObjectURL(u)});
 $("importWords").addEventListener("click",()=>$("importWordsFile").click());
 $("importWordsFile").addEventListener("change",async e=>{try{const data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data))throw new Error();words=data;saveWords();renderWords();alert("Vocabulary imported.")}catch{alert("Invalid vocabulary backup.")}});
+
+$("askTutor").addEventListener("click",()=>{$("tutorModal").classList.remove("hidden");$("tutorContext").textContent=currentContext.title?`Current article: ${currentContext.title}`:"No article selected yet."});
+$("tutorClose").addEventListener("click",()=>$("tutorModal").classList.add("hidden"));
+$("tutorMic").addEventListener("click",()=>recogniser("bg-BG",t=>{$("tutorHeard").textContent=t;$("tutorQuery").value=t},$("tutorMic")));
+$("tutorSend").addEventListener("click",openTutorChat);
+$("tutorModal").addEventListener("click",e=>{if(e.target===$("tutorModal"))$("tutorModal").classList.add("hidden")});
+
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").style.display="block"});
 $("installBtn").addEventListener("click",async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null}});
 if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js");
-renderListening();renderStories();renderWords();
+
+renderListening();renderExercises();renderWords();
 </script>
 </body>
 </html>
