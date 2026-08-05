@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f2937" />
+  <meta name="description" content="A personal Bulgarian listening and study companion." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Bulgarian Listening Hub</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --border: #dfe4ea;
+      --accent: #2563eb;
+      --accent-soft: #e8f0ff;
+      --spotify: #1db954;
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --shadow: 0 8px 24px rgba(23,32,51,.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behaviour: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #111827, #263244);
+      color: white;
+      padding: calc(22px + env(safe-area-inset-top)) 18px 22px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+
+    .wrap { max-width: 1120px; margin: 0 auto; }
+
+    .header-row {
+      display: flex;
+      gap: 14px;
+      align-items: centre;
+      justify-content: space-between;
+    }
+
+    h1 { margin: 0; font-size: clamp(24px, 5vw, 34px); }
+    .subtitle { margin: 6px 0 0; color: #d1d5db; font-size: 14px; }
+
+    .install-btn {
+      background: white;
+      color: #111827;
+      padding: 10px 14px;
+      border-radius: 10px;
+      display: none;
+      white-space: nowrap;
+    }
+
+    main { max-width: 1120px; margin: 0 auto; padding: 18px 16px 90px; }
+
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .mode-tabs button {
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .mode-tabs button.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .stats, .toolbar, .add-panel, .backup-panel, .weekly {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .stat {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 78px;
+    }
+
+    .stat strong { display: block; font-size: 22px; margin-bottom: 5px; }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 180px 150px;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+    }
+
+    button.secondary { background: #eef2ff; color: #3730a3; }
+    button.ghost { background: #f3f4f6; color: #374151; }
+    button.danger { background: #fee2e2; color: var(--danger); }
+    button.success { background: #dcfce7; color: var(--success); }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 15px;
+    }
+
+    .form-grid, .backup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 15px 15px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .weekly { padding: 15px; }
+    .weekly h2 { margin: 0 0 6px; font-size: 21px; }
+    .weekly p { margin: 0; color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .card.done { opacity: .72; }
+    .card h3 { margin: 8px 0 5px; line-height: 1.25; }
+    .creator { color: var(--muted); font-size: 14px; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #1d4ed8;
+    }
+
+    .difficulty-A0 { background: #dcfce7; color: var(--success); }
+    .difficulty-A1 { background: #fef3c7; color: var(--warning); }
+    .difficulty-A2 { background: #fee2e2; color: var(--danger); }
+
+    .notes {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: #344054;
+      white-space: pre-wrap;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .spotify-link {
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 10px;
+      padding: 11px 14px;
+      background: var(--spotify);
+      color: white;
+      font-weight: 700;
+    }
+
+    .empty {
+      background: var(--panel);
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: centre;
+      color: var(--muted);
+    }
+
+    .driving .toolbar,
+    .driving .add-panel,
+    .driving .backup-panel,
+    .driving .stats,
+    .driving .notes,
+    .driving .secondary,
+    .driving .danger {
+      display: none !important;
+    }
+
+    .driving .grid { grid-template-columns: 1fr; }
+
+    .driving .card {
+      padding: 22px;
+    }
+
+    .driving .card h3 {
+      font-size: 24px;
+    }
+
+    .driving .spotify-link,
+    .driving .ghost,
+    .driving .success {
+      width: 100%;
+      text-align: centre;
+      font-size: 18px;
+      padding: 16px;
+    }
+
+    .walking .toolbar {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .walking #searchBox { display: none; }
+
+    .walking .grid {
+      grid-template-columns: 1fr;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: centre;
+      font-size: 13px;
+      padding: 18px;
+    }
+
+    @media (max-width: 760px) {
+      .header-row { align-items: flex-start; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .toolbar, .walking .toolbar { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .form-grid, .backup-grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      .install-btn { padding: 9px 11px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap header-row">
+    <div>
+      <h1>Bulgarian Listening Hub</h1>
+      <p class="subtitle">Your personal route from A0/A1 towards A2.</p>
+    </div>
+    <button id="installBtn" class="install-btn">Install app</button>
+  </div>
+</header>
+
+<main id="app">
+  <nav class="mode-tabs" aria-label="Listening mode">
+    <button data-mode="study" class="active">Study</button>
+    <button data-mode="walking">Walking</button>
+    <button data-mode="driving">Driving</button>
+  </nav>
+
+  <section class="weekly">
+    <h2>This week’s focus</h2>
+    <p>Beginner vocabulary, Bulgarian stories and gradually more authentic news and sport.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><span>Total items</span></div>
+    <div class="stat"><strong id="savedCount">0</strong><span>Favourites</span></div>
+    <div class="stat"><strong id="doneCount">0</strong><span>Completed</span></div>
+    <div class="stat"><strong id="progressPercent">0%</strong><span>Progress</span></div>
+  </section>
+
+  <section class="toolbar">
+    <input id="searchBox" placeholder="Search title, creator or notes" />
+    <select id="typeFilter">
+      <option value="">All types</option>
+      <option>Vocabulary</option>
+      <option>News</option>
+      <option>Sport</option>
+      <option>Story</option>
+      <option>History</option>
+      <option>Culture</option>
+      <option>Folk</option>
+      <option>Jazz</option>
+    </select>
+    <select id="levelFilter">
+      <option value="">All levels</option>
+      <option>A0</option>
+      <option>A1</option>
+      <option>A2</option>
+    </select>
+  </section>
+
+  <details class="add-panel">
+    <summary>Add an episode, song or resource</summary>
+    <div class="form-grid">
+      <input id="newTitle" placeholder="Title" />
+      <input id="newCreator" placeholder="Podcast, artist or creator" />
+      <select id="newType">
+        <option>Vocabulary</option>
+        <option>News</option>
+        <option>Sport</option>
+        <option>Story</option>
+        <option>History</option>
+        <option>Culture</option>
+        <option>Folk</option>
+        <option>Jazz</option>
+      </select>
+      <select id="newLevel">
+        <option>A0</option>
+        <option selected>A1</option>
+        <option>A2</option>
+      </select>
+      <input id="newUrl" class="full" placeholder="Spotify link" />
+      <textarea id="newNotes" class="full" placeholder="Notes, useful words or why you saved it"></textarea>
+      <button id="addBtn" class="full">Add to hub</button>
+    </div>
+  </details>
+
+  <details class="backup-panel">
+    <summary>Backup and restore</summary>
+    <div class="backup-grid">
+      <button id="exportBtn" class="secondary">Export my data</button>
+      <label>
+        <input id="importInput" type="file" accept="application/json" hidden />
+        <button id="importBtn" type="button" class="ghost" style="width:100%">Import backup</button>
+      </label>
+    </div>
+  </details>
+
+  <section id="cards" class="grid"></section>
+</main>
+
+<footer>
+  Works offline after first load. Progress is stored on this device.
+</footer>
+
+<script>
+const starterItems = [
+  {
+    id: crypto.randomUUID(),
+    title: "Learn How To Talk About Nationality in Bulgarian",
+    creator: "Learn Bulgarian | BulgarianPod101.com",
+    type: "Vocabulary",
+    level: "A1",
+    url: "https://open.spotify.com/episode/0jM2gvjhWNWmIi5TZUNbLi",
+    notes: "Useful everyday vocabulary and sentence patterns.",
+    saved: true,
+    done: false
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Bulgarian Colours: Green and Yellow",
+    creator: "Learn Bulgarian with Fexingo",
+    type: "Vocabulary",
+    level: "A0",
+    url: "https://open.spotify.com/episode/09fuAabuL1vJKSFIQuzL7g",
+    notes: "Simple themed vocabulary for quick repetition.",
+    saved: true,
+    done: false
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Summer Showers Spark New Beginnings on булевард „Витоша“",
+    creator: "FluentFiction - Bulgarian",
+    type: "Story",
+    level: "A2",
+    url: "https://open.spotify.com/episode/7lFqPOIj3JNCCpEVdGqmH7",
+    notes: "A more challenging story for listening practice.",
+    saved: false,
+    done: false
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "001 - The Balkan Context",
+    creator: "The Bulgarian History Podcast",
+    type: "History",
+    level: "A2",
+    url: "https://open.spotify.com/episode/1Mud0n4j5qy8KeHIcQSi1a",
+    notes: "Useful cultural background. Check whether the spoken language suits your study goal.",
+    saved: false,
+    done: false
+  }
+];
+
+let items = JSON.parse(localStorage.getItem("bgListeningHubItems") || "null") || starterItems;
+let currentMode = localStorage.getItem("bgListeningHubMode") || "study";
+let deferredPrompt;
+
+function saveItems() {
+  localStorage.setItem("bgListeningHubItems", JSON.stringify(items));
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  localStorage.setItem("bgListeningHubMode", mode);
+  document.getElementById("app").className = mode;
+  document.querySelectorAll("[data-mode]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.mode === mode);
+  });
+  render();
+}
+
+function render() {
+  const cards = document.getElementById("cards");
+  const search = document.getElementById("searchBox").value.toLowerCase();
+  const type = document.getElementById("typeFilter").value;
+  const level = document.getElementById("levelFilter").value;
+
+  let filtered = items.filter(item => {
+    const text = `${item.title} ${item.creator} ${item.notes}`.toLowerCase();
+    return (!search || text.includes(search))
+      && (!type || item.type === type)
+      && (!level || item.level === level);
+  });
+
+  if (currentMode === "walking") {
+    filtered = filtered.filter(item => item.saved && !item.done);
+  }
+
+  if (currentMode === "driving") {
+    filtered = filtered.filter(item => !item.done);
+  }
+
+  cards.innerHTML = "";
+
+  if (!filtered.length) {
+    cards.innerHTML = '<div class="empty">No matching items found.</div>';
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "card" + (item.done ? " done" : "");
+    card.innerHTML = `
+      <div class="tags">
+        <span class="tag">${escapeHtml(item.type)}</span>
+        <span class="tag difficulty-${item.level}">${item.level}</span>
+        ${item.saved ? '<span class="tag">Favourite</span>' : ''}
+        ${item.done ? '<span class="tag">Completed</span>' : ''}
+      </div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <div class="creator">${escapeHtml(item.creator)}</div>
+      <div class="notes">${escapeHtml(item.notes || "No notes yet.")}</div>
+      <div class="card-actions">
+        <a class="spotify-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">Open in Spotify</a>
+        <button class="${item.saved ? "success" : "secondary"}" onclick="toggleSaved('${item.id}')">${item.saved ? "Favourite" : "Add favourite"}</button>
+        <button class="ghost" onclick="toggleDone('${item.id}')">${item.done ? "Mark unfinished" : "Mark completed"}</button>
+        <button class="danger" onclick="removeItem('${item.id}')">Remove</button>
+      </div>
+    `;
+    cards.appendChild(card);
+  });
+
+  document.getElementById("totalCount").textContent = items.length;
+  document.getElementById("savedCount").textContent = items.filter(i => i.saved).length;
+  document.getElementById("doneCount").textContent = items.filter(i => i.done).length;
+  const pct = items.length ? Math.round(items.filter(i => i.done).length / items.length * 100) : 0;
+  document.getElementById("progressPercent").textContent = pct + "%";
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+  }[c]));
+}
+
+function toggleSaved(id) {
+  items = items.map(i => i.id === id ? {...i, saved: !i.saved} : i);
+  saveItems();
+  render();
+}
+
+function toggleDone(id) {
+  items = items.map(i => i.id === id ? {...i, done: !i.done} : i);
+  saveItems();
+  render();
+}
+
+function removeItem(id) {
+  items = items.filter(i => i.id !== id);
+  saveItems();
+  render();
+}
+
+document.getElementById("addBtn").addEventListener("click", () => {
+  const title = document.getElementById("newTitle").value.trim();
+  const creator = document.getElementById("newCreator").value.trim();
+  const url = document.getElementById("newUrl").value.trim();
+
+  if (!title || !url) {
+    alert("Please add at least a title and Spotify link.");
+    return;
+  }
+
+  items.unshift({
+    id: crypto.randomUUID(),
+    title,
+    creator: creator || "Unknown creator",
+    type: document.getElementById("newType").value,
+    level: document.getElementById("newLevel").value,
+    url,
+    notes: document.getElementById("newNotes").value.trim(),
+    saved: true,
+    done: false
+  });
+
+  saveItems();
+  ["newTitle","newCreator","newUrl","newNotes"].forEach(id => document.getElementById(id).value = "");
+  render();
+});
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(items, null, 2)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bulgarian-listening-hub-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById("importBtn").addEventListener("click", () => {
+  document.getElementById("importInput").click();
+});
+
+document.getElementById("importInput").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const imported = JSON.parse(await file.text());
+    if (!Array.isArray(imported)) throw new Error();
+    items = imported;
+    saveItems();
+    render();
+    alert("Backup imported successfully.");
+  } catch {
+    alert("That file is not a valid Bulgarian Listening Hub backup.");
+  }
+});
+
+["searchBox","typeFilter","levelFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("input", render);
+});
+
+document.querySelectorAll("[data-mode]").forEach(btn => {
+  btn.addEventListener("click", () => setMode(btn.dataset.mode));
+});
+
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredPrompt = event;
+  document.getElementById("installBtn").style.display = "inline-block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById("installBtn").style.display = "none";
+});
+
+window.addEventListener("appinstalled", () => {
+  document.getElementById("installBtn").style.display = "none";
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+setMode(currentMode);
+</script>
+</body>
+</html>
